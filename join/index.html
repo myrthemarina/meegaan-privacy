@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MeeGaan — uitnodiging</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #FFE044; color: #14202b; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .card {
+    background: #fff; border: 2px solid #14202b; border-radius: 20px;
+    padding: 28px 24px; max-width: 380px; width: 100%; text-align: center;
+  }
+  h1 { font-size: 28px; font-weight: 900; letter-spacing: .5px; }
+  h1 span { color: #208AEF; }
+  p { font-size: 15px; color: #3c4a56; margin-top: 12px; line-height: 1.5; }
+  .btn {
+    display: inline-block; margin-top: 20px; background: #2ECC40; color: #14202b;
+    font-weight: 900; font-size: 16px; text-decoration: none;
+    border: 2px solid #14202b; border-radius: 999px; padding: 14px 26px;
+  }
+  .code {
+    margin-top: 20px; font-size: 13px; color: #55606c;
+  }
+  .code b { display: block; margin-top: 6px; font-size: 15px; color: #14202b;
+    word-break: break-all; font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Mee<span>Gaan</span></h1>
+    <p>Je bent uitgenodigd voor een kring. We openen de app voor je...</p>
+    <a class="btn" id="openBtn" href="#">Open MeeGaan</a>
+    <div class="code">
+      Opent de app niet? Open MeeGaan, tik op <b style="font-size:13px">Mijn kring</b>
+      en plak deze code bij "Code uit een uitnodiging":
+      <b id="codeText">—</b>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('token') || '';
+      var appUrl = 'kommee20://join?token=' + encodeURIComponent(token);
+      document.getElementById('openBtn').setAttribute('href', appUrl);
+      document.getElementById('codeText').textContent = token || 'geen code gevonden';
+      // Probeer de app automatisch te openen.
+      if (token) {
+        window.location.href = appUrl;
+      }
+    })();
+  </script>
+</body>
+</html>
