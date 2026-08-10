@@ -26,7 +26,6 @@
     border: 2px solid #14202b; border-radius: 999px; padding: 15px 20px; cursor: pointer;
     font-family: inherit;
   }
-  .btn:disabled { background: #e9e9ec; color: #9aa5ad; cursor: not-allowed; }
   .btn.keuze { background: #fff; margin-top: 12px; font-size: 18px; }
   .btn.keuze:hover { background: #FBE38B; }
   .btn.klein { font-size: 15px; padding: 12px 18px; background: #fff; }
@@ -37,6 +36,13 @@
     border: 2px solid #14202b; border-radius: 12px; background: #faf7ef; color: #14202b;
   }
   input:focus { outline: 3px solid #208AEF; outline-offset: 1px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .chip {
+    font-family: inherit; font-size: 15px; font-weight: 800; color: #14202b;
+    background: #fff; border: 2px solid #14202b; border-radius: 999px;
+    padding: 10px 16px; cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { background: #FFE044; }
   .stap { font-size: 12px; color: #8791a0; text-transform: uppercase; letter-spacing: .5px; text-align: center; margin-bottom: 14px; }
   .terug { display: inline-block; margin-top: 16px; font-size: 14px; color: #5a6a78; background: none; border: none; cursor: pointer; font-family: inherit; text-decoration: underline; padding: 0; }
   .veilig { margin-top: 18px; background: #faf7ef; border: 2px solid #e9e9ec; border-radius: 12px; padding: 14px; }
@@ -59,18 +65,18 @@
   <section id="s-uitleg">
     <h1>Ik<span>Ga</span>Mee</h1>
     <p class="lead">Wat leuk dat je meedoet. Je gaat de app testen die ik zelf gebouwd heb.</p>
-    <p>IkGaMee laat je zien wanneer je vrienden vrij zijn, zodat je kunt afspreken zonder eindeloos heen en weer te appen.</p>
-    <p>Je zit in de testfase. Dat betekent dat je alles mag stukmaken en eerlijk mag zeggen wat er niet deugt. Dat is precies waar ik wat aan heb.</p>
+    <p>IkGaMee laat zien wanneer je vrienden vrij zijn, zodat afspreken niet meer eindigt in eindeloos heen en weer appen.</p>
+    <p>Je hoeft twee dingen in te vullen. Daarna krijg je een stappenplan dat bij jouw telefoon past.</p>
     <div class="veilig">
       <h3>Is dit veilig?</h3>
       <p>Ik vraag alleen wat nodig is om je toegang te geven. Je agenda blijft op je eigen telefoon: alleen wat jij zelf openzet gaat naar je kring. Meer staat in de <a href="../" target="_blank">privacyverklaring</a>.</p>
     </div>
-    <button class="btn" onclick="ga('s-toestel')">Ik doe mee, halve minuut</button>
+    <button class="btn" onclick="ga('s-toestel')">Ik doe mee</button>
   </section>
 
   <!-- 2. Toestel -->
   <section id="s-toestel" hidden>
-    <div class="stap">Stap 1 van 3</div>
+    <div class="stap">Stap 1 van 2</div>
     <h2>Wat voor telefoon heb je?</h2>
     <p>Voor een iPhone loopt het anders dan voor Android, dus daar begint het mee.</p>
     <button class="btn keuze" onclick="kiesToestel('android')">Android</button>
@@ -78,84 +84,104 @@
     <button class="terug" onclick="ga('s-uitleg')">Terug</button>
   </section>
 
-  <!-- 3. Gegevens -->
+  <!-- 3. Gegevens plus agenda in één scherm -->
   <section id="s-gegevens" hidden>
-    <div class="stap">Stap 2 van 3</div>
+    <div class="stap">Stap 2 van 2</div>
     <h2>Wie ben je?</h2>
 
     <label for="naam">Je naam</label>
     <input type="text" id="naam" maxlength="80" autocomplete="name" placeholder="Voornaam en achternaam" />
 
-    <div id="veld-apple" hidden>
-      <label for="appleid">Je Apple ID</label>
-      <div class="uitleg">Het e-mailadres waarmee je apps downloadt uit de App Store. Zonder dat adres kan Apple je niet toelaten.</div>
-      <input type="email" id="appleid" maxlength="120" autocomplete="email" placeholder="jouwnaam@icloud.com" />
+    <label for="account" id="label-account">Je e-mailadres</label>
+    <div class="uitleg" id="uitleg-account"></div>
+    <input type="email" id="account" maxlength="120" autocomplete="email" placeholder="jouwnaam@gmail.com" />
+
+    <label>Welke agenda gebruik je?</label>
+    <div class="uitleg">Daarmee zet ik het laatste stapje van je stappenplan op maat.</div>
+    <div class="chips" id="agenda-chips">
+      <button type="button" class="chip" aria-pressed="false" onclick="kiesAgenda(this,'Google')">Google</button>
+      <button type="button" class="chip" aria-pressed="false" onclick="kiesAgenda(this,'Apple')">Apple</button>
+      <button type="button" class="chip" aria-pressed="false" onclick="kiesAgenda(this,'Samsung')">Samsung</button>
+      <button type="button" class="chip" aria-pressed="false" onclick="kiesAgenda(this,'Anders')">Een andere</button>
     </div>
 
-    <label for="vanwie">Van wie kreeg je deze link?</label>
-    <div class="uitleg">Dan weet ik in wiens kring je terechtkomt.</div>
-    <input type="text" id="vanwie" maxlength="80" placeholder="Voornaam is genoeg" />
+    <div id="veld-vanwie">
+      <label for="vanwie">Van wie kreeg je deze link?</label>
+      <div class="uitleg">Dan weet ik in wiens kring je terechtkomt.</div>
+      <input type="text" id="vanwie" maxlength="80" placeholder="Voornaam is genoeg" />
+    </div>
 
     <input type="text" id="website" class="verborgen" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
     <div id="fout-gegevens" class="fout" hidden></div>
-    <button class="btn" onclick="checkGegevens()">Verder</button>
+    <button class="btn" onclick="verstuurFormulier()">Klaar, laat mijn stappen zien</button>
     <button class="terug" onclick="ga('s-toestel')">Terug</button>
   </section>
 
-  <!-- 4. Agenda -->
-  <section id="s-agenda" hidden>
-    <div class="stap">Stap 3 van 3</div>
-    <h2>Welke agenda gebruik je?</h2>
-    <p>Daarmee zet ik het laatste stapje van je stappenplan op maat.</p>
-    <button class="btn keuze" onclick="kiesAgenda('Google')">Google</button>
-    <button class="btn keuze" onclick="kiesAgenda('Apple')">Apple</button>
-    <button class="btn keuze" onclick="kiesAgenda('Samsung')">Samsung</button>
-    <button class="btn keuze" onclick="toonAnders()">Een andere</button>
-    <div id="veld-anders" hidden>
-      <label for="anders">Welke dan?</label>
-      <input type="text" id="anders" maxlength="40" placeholder="Bijvoorbeeld Outlook" />
-      <button class="btn klein" onclick="kiesAgenda(document.getElementById('anders').value.trim() || 'Anders')">Klaar</button>
-    </div>
-    <button class="terug" onclick="ga('s-gegevens')">Terug</button>
-  </section>
-
-  <!-- 5. Bezig -->
+  <!-- 4. Bezig -->
   <section id="s-bezig" hidden>
     <h2>Momentje</h2>
     <p>Ik zet je gegevens klaar.</p>
   </section>
 
-  <!-- 6a. Stappenplan Android -->
-  <section id="s-klaar-android" hidden>
+  <!-- 5a. Stappenplan Android via de Play Store -->
+  <section id="s-klaar-android-play" hidden>
+    <h1>Je staat op de lijst!</h1>
+    <p class="lead">Nog één ding van mijn kant, dan kun je door.</p>
+    <ol>
+      <li><b>Ik laat je binnen bij Google.</b> Dat doe ik met de hand, dus daar zit even tijd tussen. Meestal een paar minuten, soms een paar uur. Je krijgt een appje van <span class="vanwie-tekst">degene die je uitnodigde</span> zodra het kan.</li>
+      <li><b>Tik daarna op deze link:</b><br /><a id="play-link" href="#" target="_blank" rel="noopener">Doe mee met de test van IkGaMee</a><br />Kies <b>Word tester</b> en daarna de knop naar Google Play.</li>
+      <li><b>Installeer de app en vul je e-mailadres in.</b> Je krijgt een code per mail. Geen mail? Kijk in je ongewenste post.</li>
+      <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
+      <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Die krijg je per appje. Tik erop en je zit in de kring.</li>
+    </ol>
+    <div class="tip">Had je IkGaMee eerder via een downloadlink? Verwijder die versie eerst, anders weigert je telefoon de winkelversie. Je plannen en je kring blijven staan.</div>
+  </section>
+
+  <!-- 5b. Stappenplan Android via de losse downloadlink (noodroute) -->
+  <section id="s-klaar-android-apk" hidden>
     <h1>Je bent binnen!</h1>
     <p class="lead">Volg deze stappen, dan sta je zo in de app.</p>
     <ol>
       <li><b>Download de app.</b><br /><a id="apk-link" href="#">Tik hier om IkGaMee te downloaden</a></li>
       <li><b>Zeg ja tegen de waarschuwing.</b> Je telefoon zegt dat de app van een onbekende bron komt. Dat klopt: hij komt van mij, niet uit de Play Store. Kies "toch installeren".</li>
       <li><b>Open de app en vul je e-mailadres in.</b> Je krijgt een code per mail. Geen mail? Kijk in je ongewenste post.</li>
-      <li><b>Koppel je agenda</b> bij Mijn profiel. <span id="agenda-tip-android"></span></li>
-      <li><b>Vraag <span id="vanwie-android">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Die krijg je per appje. Tik erop en je zit in de kring.</li>
+      <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
+      <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Die krijg je per appje. Tik erop en je zit in de kring.</li>
     </ol>
     <div class="tip">Loopt iets vast? Zeg het gewoon, dat is precies wat een pilot moet opleveren.</div>
   </section>
 
-  <!-- 6b. Stappenplan iPhone -->
-  <section id="s-klaar-ios" hidden>
+  <!-- 5c. Stappenplan iPhone, ik nodig je uit -->
+  <section id="s-klaar-ios-uitnodiging" hidden>
     <h1>Je staat op de lijst!</h1>
     <p class="lead">Bij een iPhone loopt het via TestFlight, de testapp van Apple. Dit gaat gebeuren.</p>
     <ol>
-      <li><b>Ik zet je op de testlijst.</b> Daarna krijg je vanzelf een mail van TestFlight.</li>
+      <li><b>Ik nodig je uit bij Apple.</b> Dat doe ik met de hand, dus daar zit even tijd tussen. Daarna krijg je vanzelf een mail van TestFlight.</li>
       <li><b>Check je ongewenste post.</b> Die mail belandt daar bijna altijd. Word je om een code gevraagd, dan mag je die overslaan.</li>
       <li><b>Haal TestFlight uit de App Store</b> (gratis, blauw icoontje) en open daarin de uitnodiging.</li>
-      <li><b>Installeer IkGaMee</b> via de knop in TestFlight, en vul je e-mailadres in. Je krijgt een code per mail.</li>
-      <li><b>Koppel je agenda</b> bij Mijn profiel. <span id="agenda-tip-ios"></span></li>
-      <li><b>Vraag <span id="vanwie-ios">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Tik op het appje en je zit in de kring.</li>
+      <li><b>Installeer IkGaMee</b> via de knop in TestFlight en vul je e-mailadres in. Je krijgt een code per mail.</li>
+      <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
+      <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Tik op het appje en je zit in de kring.</li>
     </ol>
-    <div class="tip">Duurt de mail lang? Dan sta ik nog even bij Apple in de wachtrij. Hij komt.</div>
+    <div class="tip">Duurt de mail lang? Dan sta je nog even in de wachtrij bij mij. Hij komt.</div>
   </section>
 
-  <!-- 6c. Opslaan mislukt -->
+  <!-- 5d. Stappenplan iPhone via de openbare TestFlight-link -->
+  <section id="s-klaar-ios-link" hidden>
+    <h1>Je kunt meteen door!</h1>
+    <p class="lead">Bij een iPhone loopt het via TestFlight, de testapp van Apple.</p>
+    <ol>
+      <li><b>Haal TestFlight uit de App Store</b> (gratis, blauw icoontje).</li>
+      <li><b>Tik dan op deze link:</b><br /><a id="testflight-link" href="#" target="_blank" rel="noopener">Doe mee met de test van IkGaMee</a><br />Kies accepteren en daarna installeren.</li>
+      <li><b>Open de app en vul je e-mailadres in.</b> Je krijgt een code per mail. Geen mail? Kijk in je ongewenste post.</li>
+      <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
+      <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Tik op het appje en je zit in de kring.</li>
+    </ol>
+    <div class="tip">Loopt iets vast? Zeg het gewoon, dat is precies wat een pilot moet opleveren.</div>
+  </section>
+
+  <!-- 6. Opslaan mislukt -->
   <section id="s-mislukt" hidden>
     <h2>Bijna gelukt</h2>
     <p>Het opslaan lukte niet, waarschijnlijk door de verbinding. Stuur deze gegevens even door aan degene die je uitnodigde, dan komt het goed:</p>
@@ -167,17 +193,30 @@
 
 <script>
 (function () {
-  // ---- Instellingen. Bij een nieuwe Android-build alleen deze link vervangen. ----
-  // Build de5f4367 van 10 augustus (commit e496174). Let op: een preview-build
-  // verloopt na 14 dagen, deze dus op 24 augustus. Nieuwe build = deze regel
-  // vervangen.
+  // ---- Instellingen. Hier zet je de pilot om, verder hoeft er niets te wijzigen. ----
+
+  // 'play' = testers komen via de Play Store binnen (jij zet hun adres op de
+  // testerslijst). 'apk' = de oude losse downloadlink, als noodroute.
+  var ANDROID_ROUTE = 'play';
+
+  // 'uitnodiging' = jij nodigt elk Apple ID met de hand uit. 'link' = de
+  // openbare TestFlight-link, pas mogelijk als de externe groep door de
+  // beoordeling van Apple is. Zet TESTFLIGHT_URL dan ook.
+  var IOS_ROUTE = 'uitnodiging';
+  var TESTFLIGHT_URL = '';
+
+  var PLAY_OPTIN_URL = 'https://play.google.com/apps/internaltest/4701274619945111948';
+
+  // Losse downloadlink: build de5f4367 van 10 augustus (commit e496174). Een
+  // preview-build verloopt na 14 dagen, deze dus op 24 augustus.
   var APK_URL = 'https://expo.dev/artifacts/eas/iTbDBHCN37NXvwvr6dzesNjAric0tHcnhNJc_CjRygE.apk';
+
   var SUPABASE_URL = 'https://kmgtyjdqmdirvrzwsvbs.supabase.co';
   // Publieke anon-sleutel: bedoeld voor clients. De tabel zelf staat dicht; deze
   // pagina praat alleen met de Edge Function pilot-aanmelding.
   var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZ3R5amRxbWRpcnZyendzdmJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NDg5MTYsImV4cCI6MjA5ODIyNDkxNn0.xXsY7BRhuIYQywAJ7wfCM4AJoObSAMbqPoqjwcWrYog';
 
-  var antwoord = { naam: '', platform: '', appleId: '', vanWie: '', agenda: '' };
+  var antwoord = { naam: '', platform: '', account: '', vanWie: '', agenda: '' };
 
   var agendaTips = {
     Google: 'Kies je Google-agenda als doel, dan komen plannen op de plek waar je ze gewend bent.',
@@ -185,6 +224,14 @@
     Samsung: 'Staat je agenda in Google, kies dan die als doel. Anders pakt hij de lokale Samsung-agenda.',
     Anders: 'Kies bij Mijn profiel welke agenda het doel is, dan komen plannen op de goede plek.'
   };
+
+  // De uitnodiger staat in de link (?van=Robin), zodat de tester dat veld niet
+  // hoeft te typen. Staat hij er niet in, dan vragen we het gewoon.
+  var vanUitLink = (new URLSearchParams(window.location.search).get('van') || '').trim().slice(0, 80);
+  if (vanUitLink) {
+    document.getElementById('vanwie').value = vanUitLink;
+    document.getElementById('veld-vanwie').hidden = true;
+  }
 
   window.ga = function (id) {
     var secties = document.querySelectorAll('section');
@@ -195,34 +242,46 @@
 
   window.kiesToestel = function (p) {
     antwoord.platform = p;
-    document.getElementById('veld-apple').hidden = (p !== 'ios');
+    var label = document.getElementById('label-account');
+    var uitleg = document.getElementById('uitleg-account');
+    var veld = document.getElementById('account');
+    if (p === 'ios') {
+      label.textContent = 'Je Apple ID';
+      uitleg.textContent = 'Het e-mailadres waarmee je apps downloadt uit de App Store. Zonder dat adres kan Apple je niet toelaten.';
+      veld.setAttribute('placeholder', 'jouwnaam@icloud.com');
+    } else {
+      label.textContent = 'Je Google-account';
+      uitleg.textContent = 'Het e-mailadres waarmee je in de Play Store zit. Met een ander adres kan Google je niet toelaten.';
+      veld.setAttribute('placeholder', 'jouwnaam@gmail.com');
+    }
     ga('s-gegevens');
   };
 
-  window.toonAnders = function () {
-    document.getElementById('veld-anders').hidden = false;
-    document.getElementById('anders').focus();
-  };
-
-  window.checkGegevens = function () {
-    var fout = document.getElementById('fout-gegevens');
-    antwoord.naam = document.getElementById('naam').value.trim();
-    antwoord.vanWie = document.getElementById('vanwie').value.trim();
-    antwoord.appleId = document.getElementById('appleid').value.trim();
-
-    if (antwoord.naam.length < 2) return toon(fout, 'Vul even je naam in, dan weet ik wie je bent.');
-    if (antwoord.platform === 'ios' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(antwoord.appleId)) {
-      return toon(fout, 'Vul het e-mailadres van je Apple ID in. Zonder dat adres kan Apple je niet toelaten.');
-    }
-    if (antwoord.vanWie.length < 2) return toon(fout, 'Van wie kreeg je de link? Voornaam is genoeg.');
-    fout.hidden = true;
-    ga('s-agenda');
+  window.kiesAgenda = function (knop, waarde) {
+    var chips = document.querySelectorAll('#agenda-chips .chip');
+    for (var i = 0; i < chips.length; i++) chips[i].setAttribute('aria-pressed', 'false');
+    knop.setAttribute('aria-pressed', 'true');
+    antwoord.agenda = waarde;
   };
 
   function toon(el, tekst) { el.textContent = tekst; el.hidden = false; }
 
-  window.kiesAgenda = function (a) {
-    antwoord.agenda = a;
+  window.verstuurFormulier = function () {
+    var fout = document.getElementById('fout-gegevens');
+    antwoord.naam = document.getElementById('naam').value.trim();
+    antwoord.account = document.getElementById('account').value.trim();
+    antwoord.vanWie = document.getElementById('vanwie').value.trim();
+
+    if (antwoord.naam.length < 2) return toon(fout, 'Vul even je naam in, dan weet ik wie je bent.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(antwoord.account)) {
+      return toon(fout, antwoord.platform === 'ios'
+        ? 'Vul het e-mailadres van je Apple ID in. Zonder dat adres kan Apple je niet toelaten.'
+        : 'Vul het e-mailadres van je Google-account in. Zonder dat adres kan Google je niet toelaten.');
+    }
+    if (!antwoord.agenda) return toon(fout, 'Kies even welke agenda je gebruikt.');
+    if (antwoord.vanWie.length < 2) return toon(fout, 'Van wie kreeg je de link? Voornaam is genoeg.');
+
+    fout.hidden = true;
     ga('s-bezig');
     verstuur();
   };
@@ -239,36 +298,51 @@
       body: JSON.stringify({
         naam: antwoord.naam,
         platform: antwoord.platform,
-        apple_id: antwoord.appleId,
+        apple_id: antwoord.platform === 'ios' ? antwoord.account : '',
+        google_account: antwoord.platform === 'android' ? antwoord.account : '',
         uitgenodigd_door: antwoord.vanWie,
         agenda: antwoord.agenda,
+        android_route: ANDROID_ROUTE,
         website: honeypot
       })
     })
       .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
       .then(function () { toonStappenplan(); })
       .catch(function () {
-        // Android kan altijd door: de app zit niet achter een slot. Alleen bij
-        // een iPhone hangt de toegang aan de aanmelding, dus daar is falen echt fout.
-        if (antwoord.platform === 'android') return toonStappenplan();
+        // Alleen de losse downloadlink werkt zonder aanmelding. In alle andere
+        // routes hangt de toegang aan het adres dat hier verstuurd wordt, dus
+        // dan is falen echt fout en moet de tester het zelf doorgeven.
+        if (antwoord.platform === 'android' && ANDROID_ROUTE === 'apk') return toonStappenplan();
         document.getElementById('samenvatting').textContent =
-          antwoord.naam + ' · iPhone · Apple ID ' + antwoord.appleId + ' · via ' + antwoord.vanWie;
+          antwoord.naam + ' · ' + (antwoord.platform === 'ios' ? 'iPhone' : 'Android') +
+          ' · ' + antwoord.account + ' · via ' + antwoord.vanWie;
         ga('s-mislukt');
       });
   }
 
+  function vulOveral(klasse, tekst) {
+    var plekken = document.querySelectorAll('.' + klasse);
+    for (var i = 0; i < plekken.length; i++) plekken[i].textContent = tekst;
+  }
+
   function toonStappenplan() {
-    var tip = agendaTips[antwoord.agenda] || agendaTips.Anders;
+    vulOveral('agenda-tip', agendaTips[antwoord.agenda] || agendaTips.Anders);
+    if (antwoord.vanWie) vulOveral('vanwie-tekst', antwoord.vanWie);
+
     if (antwoord.platform === 'android') {
-      document.getElementById('apk-link').setAttribute('href', APK_URL);
-      document.getElementById('agenda-tip-android').textContent = tip;
-      if (antwoord.vanWie) document.getElementById('vanwie-android').textContent = antwoord.vanWie;
-      ga('s-klaar-android');
-    } else {
-      document.getElementById('agenda-tip-ios').textContent = tip;
-      if (antwoord.vanWie) document.getElementById('vanwie-ios').textContent = antwoord.vanWie;
-      ga('s-klaar-ios');
+      if (ANDROID_ROUTE === 'apk') {
+        document.getElementById('apk-link').setAttribute('href', APK_URL);
+        return ga('s-klaar-android-apk');
+      }
+      document.getElementById('play-link').setAttribute('href', PLAY_OPTIN_URL);
+      return ga('s-klaar-android-play');
     }
+
+    if (IOS_ROUTE === 'link' && TESTFLIGHT_URL) {
+      document.getElementById('testflight-link').setAttribute('href', TESTFLIGHT_URL);
+      return ga('s-klaar-ios-link');
+    }
+    ga('s-klaar-ios-uitnodiging');
   }
 })();
 </script>
