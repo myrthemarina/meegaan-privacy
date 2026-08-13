@@ -61,27 +61,18 @@
 <body>
 <div class="card">
 
-  <!-- 1. Uitleg -->
+  <!-- 1. Uitleg plus de keuze meteen in beeld -->
   <section id="s-uitleg">
     <h1>Ik<span>Ga</span>Mee</h1>
-    <p class="lead">Wat leuk dat je meedoet. Je gaat de app testen die ik zelf gebouwd heb.</p>
-    <p>IkGaMee laat zien wanneer je vrienden vrij zijn, zodat afspreken niet meer eindigt in eindeloos heen en weer appen.</p>
-    <p>Je hoeft twee dingen in te vullen. Daarna krijg je een stappenplan dat bij jouw telefoon past.</p>
-    <div class="veilig">
-      <h3>Is dit veilig?</h3>
-      <p>Ik vraag alleen wat nodig is om je toegang te geven. Je agenda blijft op je eigen telefoon: alleen wat jij zelf openzet gaat naar je kring. Meer staat in de <a href="../" target="_blank">privacyverklaring</a>.</p>
-    </div>
-    <button class="btn" onclick="ga('s-toestel')">Ik doe mee</button>
-  </section>
-
-  <!-- 2. Toestel -->
-  <section id="s-toestel" hidden>
-    <div class="stap">Stap 1 van 2</div>
-    <h2>Wat voor telefoon heb je?</h2>
-    <p>Voor een iPhone loopt het anders dan voor Android, dus daar begint het mee.</p>
+    <p class="lead">Afspreken zonder het eindeloze heen en weer appen. Jij zet een plan uit je agenda open, je vrienden haken aan wanneer het hun uitkomt.</p>
+    <p>De app is nog in test. Je mag hem nu al gebruiken, en als iets niet werkt hoor ik dat graag.</p>
+    <h2 style="margin-top:22px">Wat voor telefoon heb je?</h2>
     <button class="btn keuze" onclick="kiesToestel('android')">Android</button>
     <button class="btn keuze" onclick="kiesToestel('ios')">iPhone</button>
-    <button class="terug" onclick="ga('s-uitleg')">Terug</button>
+    <div class="veilig">
+      <h3>Is dit veilig?</h3>
+      <p>Je agenda blijft op je eigen telefoon. Alleen wat jij zelf openzet gaat naar je kring. Meer staat in de <a href="../" target="_blank">privacyverklaring</a>.</p>
+    </div>
   </section>
 
   <!-- 3. Gegevens plus agenda in één scherm -->
@@ -115,7 +106,7 @@
 
     <div id="fout-gegevens" class="fout" hidden></div>
     <button class="btn" onclick="verstuurFormulier()">Klaar, laat mijn stappen zien</button>
-    <button class="terug" onclick="ga('s-toestel')">Terug</button>
+    <button class="terug" onclick="ga('s-uitleg')">Terug</button>
   </section>
 
   <!-- 4. Bezig -->
@@ -124,18 +115,18 @@
     <p>Ik zet je gegevens klaar.</p>
   </section>
 
-  <!-- 5a. Stappenplan Android via de Play Store -->
+  <!-- 5a. Stappenplan Android via de Play Store, zelfbediening -->
   <section id="s-klaar-android-play" hidden>
-    <h1>Je staat op de lijst!</h1>
-    <p class="lead">Nog één ding van mijn kant, dan kun je door.</p>
+    <h1>Je kunt meteen door</h1>
+    <p class="lead">Twee tikken en de app staat erop. Geen wachten.</p>
     <ol>
-      <li><b>Ik laat je binnen bij Google.</b> Dat doe ik met de hand, dus daar zit even tijd tussen. Meestal een paar minuten, soms een paar uur. Je krijgt een appje van <span class="vanwie-tekst">degene die je uitnodigde</span> zodra het kan.</li>
-      <li><b>Tik daarna op deze link:</b><br /><a id="play-link" href="#" target="_blank" rel="noopener">Doe mee met de test van IkGaMee</a><br />Kies <b>Word tester</b> en daarna de knop naar Google Play.</li>
+      <li><b>Word lid van de testgroep.</b><br /><a id="groep-link" class="btn" href="#" target="_blank" rel="noopener">Word lid van de groep</a><br />Gebruik hetzelfde Google-account als op je telefoon, anders laat Google je niet toe.</li>
+      <li><b>Tik dan op de testlink.</b><br /><a id="play-link" class="btn" href="#" target="_blank" rel="noopener">Word tester van IkGaMee</a><br />Kies <b>Word tester</b> en daarna de knop naar Google Play.</li>
       <li><b>Installeer de app en vul je e-mailadres in.</b> Je krijgt een code per mail. Geen mail? Kijk in je ongewenste post.</li>
       <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
       <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Die krijg je per appje. Tik erop en je zit in de kring.</li>
     </ol>
-    <div class="tip">Had je IkGaMee eerder via een downloadlink? Verwijder die versie eerst, anders weigert je telefoon de winkelversie. Je plannen en je kring blijven staan.</div>
+    <div class="tip">Zegt stap 2 dat je geen toegang hebt? Dan is stap 1 nog niet rond. Wacht een minuut en probeer opnieuw.</div>
   </section>
 
   <!-- 5b. Stappenplan Android via de losse downloadlink (noodroute) -->
@@ -169,11 +160,11 @@
 
   <!-- 5d. Stappenplan iPhone via de openbare TestFlight-link -->
   <section id="s-klaar-ios-link" hidden>
-    <h1>Je kunt meteen door!</h1>
-    <p class="lead">Bij een iPhone loopt het via TestFlight, de testapp van Apple.</p>
+    <h1>Je kunt meteen door</h1>
+    <p class="lead">Bij een iPhone loopt het via TestFlight, de testapp van Apple. Geen wachten.</p>
     <ol>
       <li><b>Haal TestFlight uit de App Store</b> (gratis, blauw icoontje).</li>
-      <li><b>Tik dan op deze link:</b><br /><a id="testflight-link" href="#" target="_blank" rel="noopener">Doe mee met de test van IkGaMee</a><br />Kies accepteren en daarna installeren.</li>
+      <li><b>Tik dan op deze link.</b><br /><a id="testflight-link" class="btn" href="#" target="_blank" rel="noopener">Doe mee met de test van IkGaMee</a><br />Kies accepteren en daarna installeren.</li>
       <li><b>Open de app en vul je e-mailadres in.</b> Je krijgt een code per mail. Geen mail? Kijk in je ongewenste post.</li>
       <li><b>Koppel je agenda</b> bij Mijn profiel. <span class="agenda-tip"></span></li>
       <li><b>Vraag <span class="vanwie-tekst">degene die je uitnodigde</span> om je een uitnodiging te sturen.</b> Tik op het appje en je zit in de kring.</li>
@@ -194,18 +185,27 @@
 <script>
 (function () {
   // ---- Instellingen. Hier zet je de pilot om, verder hoeft er niets te wijzigen. ----
+  //
+  // Twee routes zijn ZELFBEDIENING: de tester komt binnen zonder dat Myrthe iets
+  // doet, en het formulier wordt dan overgeslagen. De andere twee zijn handwerk
+  // en vragen wel om naam en adres, want zonder dat adres kan zij niemand toelaten.
+  //
+  //   ANDROID_ROUTE 'play'  = zelfbediening: groep + testlink van de gesloten test
+  //   ANDROID_ROUTE 'apk'   = handwerk-noodroute: de losse downloadlink
+  //   IOS_ROUTE     'link'  = zelfbediening: openbare TestFlight-link
+  //   IOS_ROUTE     'uitnodiging' = handwerk: Myrthe nodigt elk Apple ID zelf uit
 
-  // 'play' = testers komen via de Play Store binnen (jij zet hun adres op de
-  // testerslijst). 'apk' = de oude losse downloadlink, als noodroute.
   var ANDROID_ROUTE = 'play';
 
-  // 'uitnodiging' = jij nodigt elk Apple ID met de hand uit. 'link' = de
-  // openbare TestFlight-link, pas mogelijk als de externe groep door de
-  // beoordeling van Apple is. Zet TESTFLIGHT_URL dan ook.
+  // Zet IOS_ROUTE op 'link' zodra de externe TestFlight-groep door Apples Beta
+  // App Review is, en vul dan TESTFLIGHT_URL. Tot die tijd blijft het handwerk.
   var IOS_ROUTE = 'uitnodiging';
   var TESTFLIGHT_URL = '';
 
-  var PLAY_OPTIN_URL = 'https://play.google.com/apps/internaltest/4701274619945111948';
+  // De gesloten test Alpha. Twee stappen: eerst lid worden van de groep, dan pas
+  // opent de opt-in-pagina. Andersom krijgt de tester "geen toegang".
+  var GROEP_URL = 'https://groups.google.com/g/ikgamee-testers';
+  var PLAY_OPTIN_URL = 'https://play.google.com/apps/testing/nl.myrthedemaker.meegaan';
 
   // Losse downloadlink: build de5f4367 van 10 augustus (commit e496174). Een
   // preview-build verloopt na 14 dagen, deze dus op 24 augustus.
@@ -231,6 +231,9 @@
   if (vanUitLink) {
     document.getElementById('vanwie').value = vanUitLink;
     document.getElementById('veld-vanwie').hidden = true;
+    // Ook bij zelfbediening, want dan komt het formulier er niet meer aan te pas
+    // en moet de naam alsnog in het stappenplan verschijnen.
+    antwoord.vanWie = vanUitLink;
   }
 
   window.ga = function (id) {
@@ -240,8 +243,18 @@
     window.scrollTo(0, 0);
   };
 
+  // Kan deze tester zichzelf binnenlaten? Dan slaan we het formulier over: op een
+  // festival wil niemand eerst zijn gegevens invullen om een app te mogen proberen.
+  function isZelfbediening(p) {
+    if (p === 'android') return ANDROID_ROUTE === 'play';
+    return IOS_ROUTE === 'link' && !!TESTFLIGHT_URL;
+  }
+
   window.kiesToestel = function (p) {
     antwoord.platform = p;
+
+    if (isZelfbediening(p)) return toonStappenplan();
+
     var label = document.getElementById('label-account');
     var uitleg = document.getElementById('uitleg-account');
     var veld = document.getElementById('account');
@@ -334,6 +347,7 @@
         document.getElementById('apk-link').setAttribute('href', APK_URL);
         return ga('s-klaar-android-apk');
       }
+      document.getElementById('groep-link').setAttribute('href', GROEP_URL);
       document.getElementById('play-link').setAttribute('href', PLAY_OPTIN_URL);
       return ga('s-klaar-android-play');
     }
