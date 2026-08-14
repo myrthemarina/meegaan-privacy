@@ -197,10 +197,13 @@
 
   var ANDROID_ROUTE = 'play';
 
-  // Zet IOS_ROUTE op 'link' zodra de externe TestFlight-groep door Apples Beta
-  // App Review is, en vul dan TESTFLIGHT_URL. Tot die tijd blijft het handwerk.
+  // Build 10 is op 14 augustus 02:30 ingediend voor Apples Beta App Review en
+  // staat op WAITING_FOR_REVIEW. De link hieronder bestaat al, maar zegt tot de
+  // goedkeuring "this beta isn't accepting any new testers". Zodra Apple akkoord
+  // is, is 'uitnodiging' vervangen door 'link' het enige wat hier hoeft te
+  // gebeuren; dan vervalt het formulier ook voor iPhone.
   var IOS_ROUTE = 'uitnodiging';
-  var TESTFLIGHT_URL = '';
+  var TESTFLIGHT_URL = 'https://testflight.apple.com/join/kRGbJzG8';
 
   // De gesloten test Alpha. Twee stappen: eerst lid worden van de groep, dan pas
   // opent de opt-in-pagina. Andersom krijgt de tester "geen toegang".
