@@ -207,12 +207,20 @@
 
   // De gesloten test Alpha. Twee stappen: eerst lid worden van de groep, dan pas
   // opent de opt-in-pagina. Andersom krijgt de tester "geen toegang".
+  // GEVERIFIEERD 22 augustus 2026: Myrthe heeft beide adressen uit Play Console
+  // gekopieerd (Gesloten test - Alpha, tab Testers). De opt-in link hieronder is
+  // letterlijk wat Google daar onder "Internet" toont; de standaardvorm klopte dus.
+  // Play toont daarnaast een "Android"-link, play.google.com/store/apps/details
+  // ?id=nl.myrthedemaker.meegaan, maar die werkt pas nadat iemand de opt-in heeft
+  // gedaan. Daarom staat hier de opt-in en niet de storelink.
   var GROEP_URL = 'https://groups.google.com/g/ikgamee-testers';
   var PLAY_OPTIN_URL = 'https://play.google.com/apps/testing/nl.myrthedemaker.meegaan';
 
-  // Losse downloadlink: build de5f4367 van 10 augustus (commit e496174). Een
-  // preview-build verloopt na 14 dagen, deze dus op 24 augustus.
-  var APK_URL = 'https://expo.dev/artifacts/eas/iTbDBHCN37NXvwvr6dzesNjAric0tHcnhNJc_CjRygE.apk';
+  // Losse downloadlink: preview-build van 17 augustus (commit 6eccd2c,
+  // versiecode 6) - dezelfde app die de piloten op 20 augustus kregen. Een
+  // preview-build verloopt na 14 dagen, deze dus op 31 augustus. De vorige link
+  // (iTbDBHC..., 10 augustus, versiecode 2) verliep 24 augustus en is vervangen.
+  var APK_URL = 'https://expo.dev/artifacts/eas/k6UilWSGBYu4phwQaAKJTq1n_NiQN8H57ZQrG53UCGI.apk';
 
   var SUPABASE_URL = 'https://kmgtyjdqmdirvrzwsvbs.supabase.co';
   // Publieke anon-sleutel: bedoeld voor clients. De tabel zelf staat dicht; deze
